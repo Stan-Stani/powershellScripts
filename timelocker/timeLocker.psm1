@@ -13,15 +13,22 @@
     $stopWatch.Start()
     $timeSpan = New-TimeSpan -Minutes $Minutes
 
-    # $voice = New-Object -ComObject Sapi.spvoice
-    # $voice.rate = 0
-    # $voice.speak("Hey, Harcot, your BAT file is finished!")
+
+    $voice = New-Object -ComObject Sapi.spvoice
+    $voice.rate = 0
+    $hasSpoken = $false
+
 
     while ($stopWatch.Elapsed -le $timeSpan) {
         $elapsedTime = $stopWatch.Elapsed
         Start-Sleep 0.99
 
         Write-Host "`r" $($elapsedTime.Minutes):$($elapsedTime.Seconds) -NoNewLine + "out of $Minutes minutes"
+
+        if (!$hasSpoken -and $timeSpan.totalMinutes - $elapsedTime.totalMinutes -le 5) {
+            $voice.speak("5 minutes remaining.")
+            $hasSpoken = $true
+        }
     }
 
     Rundll32.exe user32.dll, LockWorkStation

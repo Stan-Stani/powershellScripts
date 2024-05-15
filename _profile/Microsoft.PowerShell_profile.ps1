@@ -122,6 +122,7 @@ function Remove-Node-Modules-All {
 }
 
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\timelocker\timeLocker.psm1"
+Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\ngrokFreeApply\ngrokFreeApply.psm1"
 
 # Setup python encoding so ps doesn't complain
 $env:PYTHONIOENCODING = "utf-8"
