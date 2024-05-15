@@ -2,17 +2,44 @@
 
 
 
+
 function Invoke-NgrokFreeApply {
     param (
         # Resets .env.local
-        [switch]$ShouldReset
+        [switch]$ShouldReset,
+        [switch]$ShouldKillExisting   
     )
+
+    function Invoke-Kill-Ngrok {
+        # Check if an ngrok process is already running
+        $ngrokProcess = Get-Process -Name "ngrok" -ErrorAction SilentlyContinue
+        if ($ngrokProcess) {
+            Write-Host "An ngrok process is already running. Terminating it..."
+            $ngrokProcess | Stop-Process -Force
+            Write-Host "Ngrok process terminated."
+        
+        
+        }
+    }
+
+    $moduleLocation = $PSScriptRoot
+
+    if ($ShouldReset) {
+        $ShouldKillExisting = $true
+    }
 
     if ($ShouldReset) {
         $resetContent = Get-Content "C:\Users\StanStanislaus\Documents\git-repos\steffes-website\apps\web\.env.local copy.local"
         $resetContent | Set-Content -Path "C:\Users\StanStanislaus\Documents\git-repos\steffes-website\apps\web\.env.local"
         return
     }
+
+    if ($ShouldKillExisting) {
+        Invoke-Kill-Ngrok
+        return
+    }
+
+
 
     function Get-Common-Line-Values {
         param (
@@ -65,7 +92,7 @@ function Invoke-NgrokFreeApply {
         )
 
         #getEnvVars
-        Get-Content .env.local | foreach {
+        Get-Content (Join-Path $moduleLocation ".env.local") | foreach {
             $name, $value = $_.split('=')
             if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
                 continue
@@ -73,27 +100,15 @@ function Invoke-NgrokFreeApply {
             Set-Content env:\$name $value
         }
 
-        if ($ngrokProcess) {
-            Write-Host "An ngrok process is already running. Terminating it..."
-            $ngrokProcess | Stop-Process -Force
-            Write-Host "Ngrok process terminated."
         
-        
-        }
 
-        $outputFile = ".\log.log"
+        $outputFile = (Join-Path $moduleLocation ".\log.log")
         Write-Host "Making sure there is no old log file at $outputFile"
         Remove-Item $outputFile -ErrorAction Stop
   
-
-        # Check if an ngrok process is already running
-        $ngrokProcess = Get-Process -Name "ngrok" -ErrorAction SilentlyContinue
-
-  
-
     
 
-        Start-Process -FilePath "ngrok" -ArgumentList "start --all --log `"$outputFile`"" 
+        $ngrokProcess = Start-Process -FilePath "ngrok" -ArgumentList "start --all --log `"$outputFile`""  -PassThru
 
 
         Write-Host "Ngrok process started. Output is being redirected to $outputFile."
