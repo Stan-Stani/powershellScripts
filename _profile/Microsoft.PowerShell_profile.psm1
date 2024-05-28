@@ -156,6 +156,11 @@ function Remove-Node-Modules-All {
     $pr 
 }
 
+function Start-Webkit {
+    cd C:\Users\StanStanislaus\Documents\Stan\Utils\webkit-browser
+    node nocache.js
+}
+
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\timelocker\timeLocker.psm1"
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\ngrokFreeApply\ngrokFreeApply.psm1"
 
