@@ -9,6 +9,9 @@ Invoke-Expression "$(thefuck --alias)"
 Import-Module posh-git
 Import-Module z
 
+$PROFILE_MODULE = $PSScriptRoot
+
+
 # Makes a list of systemfunctions before profile loads, and thus before my custom functions load.
 # Built off of https://stackoverflow.com/a/15694429/1465015 @mjolinor's answer.
 $sysfunctions = gci function:
@@ -158,3 +161,4 @@ Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\ng
 
 
 
+Export-ModuleMember -Function * -Alias * -Variable PROFILE_MODULE
