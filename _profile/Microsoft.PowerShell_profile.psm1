@@ -1,3 +1,34 @@
+# Setup python encoding so ps doesn't complain
+$env:PYTHONIOENCODING = "utf-8"
+
+# Setup git error debug logging
+$env:GIT_TRACE2_EVENT = "C:\Users\StanStanislaus\Documents\Stan\git_trace2_event.log"
+
+# Runs the --alias command for thefuck, setting up thefuck properly for ps
+Invoke-Expression "$(thefuck --alias)"
+Import-Module posh-git
+Import-Module z
+
+# Makes a list of systemfunctions before profile loads, and thus before my custom functions load.
+# Built off of https://stackoverflow.com/a/15694429/1465015 @mjolinor's answer.
+$sysfunctions = gci function:
+$sysaliases = gci alias:
+function Get-MyFunctions {
+    $userAliases = gci alias: | where { $sysaliases -notcontains $_ }
+    $userFunctions = gci function: | where { $sysfunctions -notcontains $_ }
+
+    $output = foreach ($function in $userFunctions) {
+        $alias = $userAliases | where { $_.Definition -eq $function.Name }
+        $functionInfo = $function | Select-Object Name,
+        @{Name = 'Alias'; Expression = { if ($alias) { $alias.Name } else { "-" } } }
+        $functionInfo
+    }
+
+    $output | Format-Table -AutoSize
+}
+New-Alias -Name mf -Value Get-MyFunctions
+
+
 # g => git
 function Invoke-Git { & git $args; Write-Host Ran $MyInvocation.MyCommand from `$profile }
 New-Alias -Name g -Value Invoke-Git
@@ -105,13 +136,14 @@ function random-ui {
     }
     cls
 }
-function gpr {
+function Get-PullRequest {
     # https://matklad.github.io/2023/10/23/unified-vs-split-diff.html
     git fetch origin $args[0]
     git checkout FETCH_HEAD
     $base = git merge-base HEAD main
     git reset $base
 }
+New-Alias -Name gpr -Value Get-PullRequest
 
 function Remove-Node-Modules-All {
     $input = Read-Host -Prompt "'y' to remove all node_modules in this and sub-dirs. 'Enter' to cancel..."
@@ -124,13 +156,5 @@ function Remove-Node-Modules-All {
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\timelocker\timeLocker.psm1"
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\ngrokFreeApply\ngrokFreeApply.psm1"
 
-# Setup python encoding so ps doesn't complain
-$env:PYTHONIOENCODING = "utf-8"
 
-# Setup git error debug logging
-$env:GIT_TRACE2_EVENT = "C:\Users\StanStanislaus\Documents\Stan\git_trace2_event.log"
 
-# Runs the --alias command for thefuck, setting up thefuck properly for ps
-Invoke-Expression "$(thefuck --alias)"
-Import-Module posh-git
-Import-Module z
