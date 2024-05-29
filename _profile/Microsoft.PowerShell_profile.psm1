@@ -38,7 +38,7 @@ New-Alias -Name g -Value Invoke-Git
 
 # s => git status
 function Invoke-GitStatus { & git status; Write-Host Ran $MyInvocation.MyCommand from `$profile }
-New-Alias -Name s -Value Invokeoke-GitStatus
+New-Alias -Name s -Value Invoke-GitStatus
 
 # c => git checkout
 function Invoke-GitCheckout {
@@ -49,7 +49,7 @@ function Invoke-GitCheckout {
     #     & "C:\Users\StanStanislaus\Documents\Stan\Utils\apply my frontends configs.lnk"
     # }
 }
-New-Alias -Name c -Value Invokeoke-GitCheckout
+New-Alias -Name c -Value Invoke-GitCheckout
 
 # a => git checkout; git stash apply
 function Invoke-GitCheckoutStashApply {
@@ -61,14 +61,14 @@ function Invoke-GitCheckoutStashApply {
     #     & "C:\Users\StanStanislaus\Documents\Stan\Utils\apply my frontends configs.lnk"
     # }
 }
-New-Alias -Name a -Value Invokeoke-GitCheckoutStashApply
+New-Alias -Name a -Value Invoke-GitCheckoutStashApply
 
 # p => git pull
 function Invoke-GitPull {
     & git pull $args
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name p -Value Invokeoke-GitPull
+New-Alias -Name p -Value Invoke-GitPull
 
 # pp => git checkout $args; git pull
 function Invoke-GitCheckoutPull {
@@ -76,7 +76,7 @@ function Invoke-GitCheckoutPull {
     & git pull
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name pp -Value Invokeoke-GitCheckoutPull
+New-Alias -Name pp -Value Invoke-GitCheckoutPull
 
 
 # m => git stash; git checkout main; git pull
@@ -87,7 +87,7 @@ function Invoke-GitStashPullMain {
     & git pull
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name m -Value Invokeoke-GitStashPullMain
+New-Alias -Name m -Value Invoke-GitStashPullMain
 
 function Set-ClickablePowerShellScript {
     # Find the first .ps1 script in the current directory
