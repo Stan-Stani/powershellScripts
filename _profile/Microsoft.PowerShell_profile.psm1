@@ -37,11 +37,11 @@ function Invoke-Git { & git $args; Write-Host Ran $MyInvocation.MyCommand from `
 New-Alias -Name g -Value Invoke-Git
 
 # s => git status
-function Invoke-Git-Status { & git status; Write-Host Ran $MyInvocation.MyCommand from `$profile }
-New-Alias -Name s -Value Invoke-Git-Status
+function Invoke-GitStatus { & git status; Write-Host Ran $MyInvocation.MyCommand from `$profile }
+New-Alias -Name s -Value Invokeoke-GitStatus
 
 # c => git checkout
-function Invoke-Git-Checkout {
+function Invoke-GitCheckout {
     & git checkout $args;
     Write-Host Ran $MyInvocation.MyCommand from `$profile
     # $currentLocation = Get-Location
@@ -49,10 +49,10 @@ function Invoke-Git-Checkout {
     #     & "C:\Users\StanStanislaus\Documents\Stan\Utils\apply my frontends configs.lnk"
     # }
 }
-New-Alias -Name c -Value Invoke-Git-Checkout
+New-Alias -Name c -Value Invokeoke-GitCheckout
 
 # a => git checkout; git stash apply
-function Invoke-Git-Checkout-Stash-Apply {
+function Invoke-GitCheckoutStashApply {
     & git checkout $args
     git stash apply
     Write-Host Ran $MyInvocation.MyCommand from `$profile
@@ -61,35 +61,35 @@ function Invoke-Git-Checkout-Stash-Apply {
     #     & "C:\Users\StanStanislaus\Documents\Stan\Utils\apply my frontends configs.lnk"
     # }
 }
-New-Alias -Name a -Value Invoke-Git-Checkout-Stash-Apply
+New-Alias -Name a -Value Invokeoke-GitCheckoutStashApply
 
 # p => git pull
-function Invoke-Git-Pull {
+function Invoke-GitPull {
     & git pull $args
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name p -Value Invoke-Git-Pull
+New-Alias -Name p -Value Invokeoke-GitPull
 
 # pp => git checkout $args; git pull
-function Invoke-Git-Checkout-Pull {
+function Invoke-GitCheckoutPull {
     & git checkout $args
     & git pull
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name pp -Value Invoke-Git-Checkout-Pull
+New-Alias -Name pp -Value Invokeoke-GitCheckoutPull
 
 
 # m => git stash; git checkout main; git pull
-function Invoke-Git-Stash-Pull-Main {
+function Invoke-GitStashPullMain {
     $ErrorActionPreference = "Stop"
     & git stash
     & git checkout main
     & git pull
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name m -Value Invoke-Git-Stash-Pull-Main
+New-Alias -Name m -Value Invokeoke-GitStashPullMain
 
-function Set-Clickable-PowerShell-Script {
+function Set-ClickablePowerShellScript {
     # Find the first .ps1 script in the current directory
     $script = Get-ChildItem -Filter *.ps1 | Select-Object -First 1
 
@@ -115,7 +115,7 @@ function Set-Clickable-PowerShell-Script {
     }
 }
 
-function Run-Lerna-No-Cache {
+function Invoke-LernaNoCache {
     # yarn lerna exec yarn rimraf ./node_modules/.cache 
     # yarn lerna run build --skip-nx-cache
     # $targetDir = "C:\Users\StanStanislaus\Documents\git-repos\steffes-packages"
@@ -125,10 +125,10 @@ function Run-Lerna-No-Cache {
 
 
 }
-New-Alias -Name l -Value Run-Lerna-No-Cache
+New-Alias -Name l -Value Invoke-LernaNoCache
 
 # src: https://ilovepowershell.com/uncategorized/powershell-profile-trick-random-background-color/
-function random-ui {
+function Invoke-RandomUI {
     $random = New-Object System.Random
     switch ($random.Next(5)) {
         0 { $host.ui.RawUI.BackgroundColor = "DarkMagenta"; $host.ui.RawUI.ForegroundColor = "White" }
@@ -148,7 +148,7 @@ function Get-PullRequest {
 }
 New-Alias -Name gpr -Value Get-PullRequest
 
-function Remove-Node-Modules-All {
+function Remove-NodeModulesAll {
     $input = Read-Host -Prompt "'y' to remove all node_modules in this and sub-dirs. 'Enter' to cancel..."
     if ($input -eq 'y') {
         Get-ChildItem -Path . -Recurse -Directory -Name -Filter 'node_modules' | ForEach-Object { Remove-Item -Path $_ -Recurse -Force }

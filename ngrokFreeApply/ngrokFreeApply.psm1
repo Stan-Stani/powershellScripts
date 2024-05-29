@@ -193,3 +193,4 @@ function Invoke-NgrokFreeApply {
 
 }
 New-Alias -Name nfa -Value Invoke-NgrokFreeApply
+

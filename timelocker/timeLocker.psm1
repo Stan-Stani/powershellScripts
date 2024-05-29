@@ -34,3 +34,4 @@
     Rundll32.exe user32.dll, LockWorkStation
 }
 New-Alias -Name tl -Value Invoke-TimeLocker
+
