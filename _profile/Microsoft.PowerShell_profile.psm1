@@ -36,6 +36,36 @@ New-Alias -Name mf -Value Get-MyFunctions
 function Invoke-Git { & git $args; Write-Host Ran $MyInvocation.MyCommand from `$profile }
 New-Alias -Name g -Value Invoke-Git
 
+# list useful git commands
+function Get-UsefulGitCommands { 
+    $gitCommands = @(
+        [PSCustomObject]@{
+            Command = 'stash show [index]'
+            Description = 'Show changes recorded in the stash as a diff'
+        },
+        [PSCustomObject]@{
+            Command = 'log main..'
+            Description = 'Show commits on this branch not yet merged into the main branch'
+        },
+        [PSCustomObject]@{
+            Command = 'gui'
+            Description = 'Launch the Git GUI'
+        }
+    )
+
+    foreach ($cmd in $gitCommands) {
+        Write-Host "$($cmd.Command): $($cmd.Description)"
+    }
+
+    return $gitCommands
+}
+New-Alias -Name ggc -Value Get-UsefulGitCommands
+
+
+# d => git diff
+function Invoke-GitDiff { & git diff $args; Write-Host Ran $MyInvocation.MyCommand from `$profile }
+New-Alias -Name d -Value Invoke-GitDiff
+
 # s => git status
 function Invoke-GitStatus { & git status; Write-Host Ran $MyInvocation.MyCommand from `$profile }
 New-Alias -Name s -Value Invoke-GitStatus

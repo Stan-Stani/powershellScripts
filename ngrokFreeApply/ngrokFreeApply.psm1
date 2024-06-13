@@ -104,7 +104,7 @@ function Invoke-NgrokFreeApply {
 
         $outputFile = (Join-Path $moduleLocation ".\log.log")
         Write-Host "Making sure there is no old log file at $outputFile"
-        Remove-Item $outputFile -ErrorAction Stop
+        Remove-Item $outputFile -ErrorAction Continue
   
     
 
