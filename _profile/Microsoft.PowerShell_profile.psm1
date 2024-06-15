@@ -50,6 +50,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command = 'gui'
             Description = 'Launch the Git GUI'
+        },
+        [PSCustomObject]@{
+            Command     = 'diff --stat main'
+            Description = 'Show change summary between main and current branch, kind of like `git status` but for comparing branches'
         }
     )
 
