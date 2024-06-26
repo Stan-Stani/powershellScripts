@@ -7,8 +7,11 @@ function Invoke-NgrokFreeApply {
     param (
         # Resets .env.local
         [switch]$ShouldReset,
-        [switch]$ShouldKillExisting   
+        [switch]$ShouldKillExisting,
+        [switch]$ZrokInstead
     )
+
+    
 
     function Invoke-Kill-Ngrok {
         # Check if an ngrok process is already running
@@ -39,6 +42,11 @@ function Invoke-NgrokFreeApply {
         return
     }
 
+    if ($ZrokInstead) {
+        $coreAPIURL = "https://$Env:ZROK_RESERVED_CORE_API_TOKEN.share.zrok.io"
+        $authAPIURL = "https://$Env:ZROK_RESERVED_AUTH_API_TOKEN.share.zrok.io"
+        $externalAPIURL = "https://$Env:ZROK_RESERVED_EXTERNAL_API_TOKEN.share.zrok.io"
+    }
 
 
     function Get-Common-Line-Values {
@@ -85,21 +93,84 @@ function Invoke-NgrokFreeApply {
 
     }
 
+    function Get-EnvVars {
+        # https://stackoverflow.com/a/74839464/1465015
+        #getEnvVars
+        try {
+            Get-Content (Join-Path $moduleLocation ".env.local") | foreach {
+                $name, $value = $_.split('=')
+                if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
+                    write-host "continued"
+                    continue
+                }
+                Write-Host $name
+                Set-Content env:\$name $value
+            }
+        }
+        catch {
+            Write-Host Could not get env file stuff
+        }
+        write-host 'done'
+    }
+
+    # gpt4o says use this instead
+    # function Get-EnvVars {
+    #     # https://stackoverflow.com/a/74839464/1465015
+    #     #getEnvVars
+    #     try {
+    #         $envFilePath = Join-Path $moduleLocation ".env.local"
+    #         Write-Host "Reading environment variables from: $envFilePath"
+
+    #         $lines = Get-Content $envFilePath
+
+    #         Write-Host "Total lines to process: $($lines.Count)"
+
+    #         $lines | ForEach-Object {
+    #             Write-Host "Processing line: '$_'"
+
+    #             # Trim leading and trailing whitespace from the line
+    #             $_ = $_.Trim()
+
+    #             # Skip blank lines and comments
+    #             if ([string]::IsNullOrWhiteSpace($_) -or $_.StartsWith('#')) {
+    #                 Write-Host "continued"
+    #                 return
+    #             }
+
+    #             # Split the line into name and value
+    #             $splitLine = $_.Split('=', 2)  # Limit split to 2 parts
+    #             if ($splitLine.Count -ne 2) {
+    #                 Write-Host "Invalid line: $_"
+    #                 return
+    #             }
+
+    #             $name = $splitLine[0].Trim()
+    #             $value = $splitLine[1].Trim()
+
+    #             # Validate name
+    #             if ([string]::IsNullOrWhiteSpace($name)) {
+    #                 Write-Host "continued"
+    #                 return
+    #             }
+
+    #             Write-Host "Setting environment variable: $name with value: $value"
+    #             Set-Content -Path "env:\$name" -Value $value
+    #         }
+    #     }
+    #     catch {
+    #         Write-Error "Could not get env file stuff: $_"
+    #     }
+
+    #     Write-Host 'done'
+    # }
+
     function Start-Ngrok {
         param (
             [string]
             $WorkingDir = ""
         )
 
-        #getEnvVars
-        Get-Content (Join-Path $moduleLocation ".env.local") | foreach {
-            $name, $value = $_.split('=')
-            if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
-                continue
-            }
-            Set-Content env:\$name $value
-        }
-
+       
         
 
         $outputFile = (Join-Path $moduleLocation ".\log.log")
@@ -151,7 +222,69 @@ function Invoke-NgrokFreeApply {
 
     }
 
-    Start-Ngrok
+    function Start-Zrok {
+
+        write-host helloz
+
+        try {
+            Start-Process -FilePath "zrok" -ArgumentList "zrok share reserved $Env:ZROK_RESERVED_CORE_API_TOKEN"
+            Start-Process -FilePath "zrok" -ArgumentList "zrok share reserved $Env:ZROK_RESERVED_AUTH_API_TOKEN"
+            Start-Process -FilePath "zrok" -ArgumentList "zrok share reserved $Env:ZROK_RESERVED_EXTERNAL_API_TOKEN"
+        }
+        catch {
+            write-host "Couldn't start zrok processes"
+        }
+
+        Write-Host "Zrok processes started."
+ 
+
+        # Sleeping to wait for tunnels to open
+    
+
+        # Initialize an empty array to store the extracted URLs
+        $localUrls = @("https://localhost:44357", "https://localhost:44396", "https://localhost:44358")
+        $externalUrls = @($coreAPIURL, $authAPIURL, $externalAPIURL)
+
+        $urlTuple = @($localUrls, $externalUrls)
+
+        $envPath = $Env:ENV_TO_CHANGE
+        $envContent = Get-Content $envPath
+        # length of both arrs should be same
+    
+        $urlIndex = 0
+        foreach ($url in $urlTuple[0]) {
+            Write-Host "internalURL"
+            Write-Host $url
+    
+            for ($i = 0; $i -lt $envContent.Length; $i++) {
+                $line = $envContent[$i]
+                if ($line -match "^NEXT" -and $line -match $url) {
+                    # Replace internal URLs with ngrok external URLs
+                    Write-Host "EXTNERal"
+                    Write-Host $urlTuple[1][$urlIndex]
+                    $envContent[$i] = $line.Replace($url, $urlTuple[1][$urlIndex])
+                }
+          
+                write-host 'fail'
+            }
+        
+        
+            $urlIndex++
+        }
+
+        $envContent | Set-Content $envPath
+    }
+
+    write-host hello
+    Get-EnvVars
+    write-host hello
+    if (-not $ZrokInstead) {
+        Start-Ngrok
+    }
+    else {
+        Start-Zrok
+    }
+    write-host 'fail2'
 
     $session = New-PSSession -UseWindowsPowerShell
     Invoke-Command -Session $session {

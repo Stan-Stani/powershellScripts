@@ -1,8 +1,20 @@
 # Setup python encoding so ps doesn't complain
 $env:PYTHONIOENCODING = "utf-8"
 
+# Otput git stuff with correct formatting, e.g. `git diff > mypatch.patch`
+$env:LESSCHARSET = 'UTF-8'
+
 # Setup git error debug logging
 $env:GIT_TRACE2_EVENT = "C:\Users\StanStanislaus\Documents\Stan\git_trace2_event.log"
+
+# # https://stackoverflow.com/a/74839464/1465015
+# Get-Content .env | foreach {
+#     $name, $value = $_.split('=')
+#     if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
+#         continue
+#     }
+#     Set-Content env:\$name $value
+# }
 
 # Runs the --alias command for thefuck, setting up thefuck properly for ps
 Invoke-Expression "$(thefuck --alias)"
@@ -54,6 +66,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'diff --stat main'
             Description = 'Show change summary between main and current branch, kind of like `git status` but for comparing branches'
+        },
+        [PSCustomObject]@{
+            Command     = 'git stash list -i -p -G "searchString"'
+            Description = 'Search stashes for a text match.'
         }
     )
 
