@@ -212,7 +212,7 @@ function Start-Webkit {
 }
 
 Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\timelocker\timeLocker.psm1"
-Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\ngrokFreeApply\ngrokFreeApply.psm1"
+Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\adit\adit.psm1"
 
 
 

@@ -2,8 +2,8 @@
 
 
 
-
-function Invoke-NgrokFreeApply {
+# 
+function Invoke-Adit {
     param (
         # Resets .env.local
         [switch]$ShouldReset,
@@ -11,7 +11,11 @@ function Invoke-NgrokFreeApply {
         [switch]$ZrokInstead
     )
 
-    
+    Start-Process PowerShell "zrok share reserved zfgxrjt9c9gl"
+    Start-Process PowerShell "zrok share reserved ysqkfi80qfc4"
+    Start-Process PowerShell "zrok share reserved h7v9m7iooegn"
+
+    exit
 
     function Invoke-Kill-Ngrok {
         # Check if an ngrok process is already running
@@ -325,5 +329,5 @@ function Invoke-NgrokFreeApply {
     }
 
 }
-New-Alias -Name nfa -Value Invoke-NgrokFreeApply
+New-Alias -Name adit -Value Invoke-Adit
 
