@@ -7,17 +7,14 @@ $env:LESSCHARSET = 'UTF-8'
 # Setup git error debug logging
 $env:GIT_TRACE2_EVENT = "C:\Users\StanStanislaus\Documents\Stan\git_trace2_event.log"
 
-# # https://stackoverflow.com/a/74839464/1465015
-# Get-Content .env | foreach {
-#     $name, $value = $_.split('=')
-#     if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
-#         continue
-#     }
-#     Set-Content env:\$name $value
-# }
-
-# Runs the --alias command for thefuck, setting up thefuck properly for ps
-Invoke-Expression "$(thefuck --alias)"
+try {
+    # Runs the --alias command for thefuck, setting up thefuck properly for ps
+    Invoke-Expression "$(thefuck --alias)" 
+}
+catch {
+    Clear-Host
+    Write-Host `n'Yeah, we know thefuck is broken for now.'`n
+}
 Import-Module posh-git
 Import-Module z
 
@@ -52,15 +49,15 @@ New-Alias -Name g -Value Invoke-Git
 function Get-UsefulGitCommands { 
     $gitCommands = @(
         [PSCustomObject]@{
-            Command = 'stash show [index]'
+            Command     = 'stash show [index]'
             Description = 'Show changes recorded in the stash as a diff'
         },
         [PSCustomObject]@{
-            Command = 'log main..'
+            Command     = 'log main..'
             Description = 'Show commits on this branch not yet merged into the main branch'
         },
         [PSCustomObject]@{
-            Command = 'gui'
+            Command     = 'gui'
             Description = 'Launch the Git GUI'
         },
         [PSCustomObject]@{
@@ -211,8 +208,8 @@ function Start-Webkit {
     node nocache.js
 }
 
-Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\timelocker\timeLocker.psm1"
-Import-Module "C:\Users\StanStanislaus\Documents\Stan\Utils\PowershellScripts\adit\adit.psm1"
+Import-Module "..\timelocker\timeLocker.psm1"
+Import-Module "..\adit\adit.psm1"
 
 
 
