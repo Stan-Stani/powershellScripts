@@ -67,6 +67,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git stash list -i -p -G "searchString"'
             Description = 'Search stashes for a text match.'
+        },
+        [PSCustomObject]@{
+            Command     = 'git diff [branchName] -- *'
+            Description = 'Diff current branch and branchName. May need to checkout the target branch first.'
         }
     )
 
