@@ -212,8 +212,8 @@ function Start-Webkit {
     node nocache.js
 }
 
-Import-Module "..\timelocker\timeLocker.psm1"
-Import-Module "..\adit\adit.psm1"
+Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
+Import-Module "$PSScriptRoot\..\adit\adit.psm1"
 
 
 
