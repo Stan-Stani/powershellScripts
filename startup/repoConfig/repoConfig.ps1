@@ -1,9 +1,9 @@
 try {
     pwsh C:\Users\StanStanislaus\Documents\Stan\Utils\pullMains\pullMains.ps1
 
-    pwsh C:\Users\StanStanislaus\Documents\Stan\Utils\backendConfigs\SignalR\setupSignalRAddress.ps1
+    # pwsh C:\Users\StanStanislaus\Documents\Stan\Utils\backendConfigs\SignalR\setupSignalRAddress.ps1
 
-    pwsh C:\Users\StanStanislaus\Documents\Stan\Utils\backendConfigs\stan-backend-config-FUNCTIONS\setupLocalAzureFunctions.ps1
+    # pwsh C:\Users\StanStanislaus\Documents\Stan\Utils\backendConfigs\stan-backend-config-FUNCTIONS\setupLocalAzureFunctions.ps1
 }
 catch {
 }
