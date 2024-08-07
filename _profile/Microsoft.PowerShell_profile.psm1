@@ -17,6 +17,11 @@ catch {
 }
 Import-Module posh-git
 Import-Module z
+$gitExtensionsModuleFolder = "$PSScriptRoot/../gitExtensions" 
+foreach ($module in Get-Childitem $gitExtensionsModuleFolder -Name -Filter "*.psm1") {
+    Import-Module "$gitExtensionsModuleFolder/$module"
+}
+
 
 $PROFILE_MODULE = $PSScriptRoot
 
