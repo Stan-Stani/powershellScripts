@@ -41,7 +41,7 @@ function Get-MyFunctions {
         $functionInfo
     }
 
-    $output | Format-Table -AutoSize
+    $output | Format-Table -AutoSize | Out-Host -Paging
 }
 New-Alias -Name mf -Value Get-MyFunctions
 
