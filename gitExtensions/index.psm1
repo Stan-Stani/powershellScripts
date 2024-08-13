@@ -1,5 +1,10 @@
 function Invoke-GitExtensionCheckoutHistory {
-    $history = git reflog | Select-String 'checkout' | ForEach-Object { $_ -replace '^.*to ', '' }
+    $history = git reflog | Select-String 'checkout' | ForEach-Object { 
+        [PSCustomObject]@{
+            Checkout = $_ -replace '^.*to ', ''
+            Index  = $index++
+        } 
+    }
     
     $lessCommand = Get-Command less -ErrorAction SilentlyContinue
     $chocoCommand = Get-Command choco -ErrorAction SilentlyContinue
