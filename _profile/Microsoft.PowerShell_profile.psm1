@@ -83,10 +83,6 @@ function Get-UsefulGitCommands {
         }
     )
 
-    # foreach ($cmd in $gitCommands) {
-    #     Write-Host "$($cmd.Command): $($cmd.Description)"
-    # }
-
     return $gitCommands
 }
 New-Alias -Name ggc -Value Get-UsefulGitCommands
@@ -102,7 +98,11 @@ New-Alias -Name s -Value Invoke-GitStatus
 
 # c => git checkout
 function Invoke-GitCheckout {
+    Write-Host "Running: 
     & git checkout $args;
+    & git fetch;"
+    & git checkout $args;
+    & git fetch;
     Write-Host Ran $MyInvocation.MyCommand from `$profile
     # $currentLocation = Get-Location
     # if ($currentLocation.Path -like "*\testing*" -or $currentLocation.Path -like "*\frontends*") {
