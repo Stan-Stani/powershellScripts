@@ -77,11 +77,15 @@ function Get-UsefulGitCommands {
             Command     = 'git diff [branchName] -- *'
             Description = 'Diff current branch and branchName. May need to checkout the target branch first.'
         }
+        [PSCustomObject]@{
+            Command     = 'git merge [branchName] --strategy-option theirs'
+            Description = 'If there are conflicts, automatically uses incoming branch`s side.'
+        }
     )
 
-    foreach ($cmd in $gitCommands) {
-        Write-Host "$($cmd.Command): $($cmd.Description)"
-    }
+    # foreach ($cmd in $gitCommands) {
+    #     Write-Host "$($cmd.Command): $($cmd.Description)"
+    # }
 
     return $gitCommands
 }
