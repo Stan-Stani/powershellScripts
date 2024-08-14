@@ -76,10 +76,14 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git diff [branchName] -- *'
             Description = 'Diff current branch and branchName. May need to checkout the target branch first.'
-        }
+        },
         [PSCustomObject]@{
             Command     = 'git merge [branchName] --strategy-option theirs'
-            Description = 'If there are conflicts, automatically uses incoming branch`s side.'
+            Description = "Uses incoming branch's side automatically, if there are conflicts."
+        },
+        [PSCustomObject]@{
+            Command     = 'git update-index --skip-worktree <file_name>'
+            Description = "Use this to avoid commiting changes to a tracked file. (Don't use assume-unchanged instead.)"
         }
     )
 
