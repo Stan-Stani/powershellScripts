@@ -104,9 +104,9 @@ New-Alias -Name s -Value Invoke-GitStatus
 function Invoke-GitCheckout {
     Write-Host "Running: 
     & git checkout $args;
-    & git fetch;"
+    & git pull;"
     & git checkout $args;
-    & git fetch;
+    & git pull;
     Write-Host Ran $MyInvocation.MyCommand from `$profile
     # $currentLocation = Get-Location
     # if ($currentLocation.Path -like "*\testing*" -or $currentLocation.Path -like "*\frontends*") {
