@@ -100,7 +100,7 @@ New-Alias -Name d -Value Invoke-GitDiff
 function Invoke-GitStatus { & git status; Write-Host Ran $MyInvocation.MyCommand from `$profile }
 New-Alias -Name s -Value Invoke-GitStatus
 
-# c => git checkout
+# c => git checkout; git pull;
 function Invoke-GitCheckout {
     Write-Host "Running: 
     & git checkout $args;
@@ -114,6 +114,17 @@ function Invoke-GitCheckout {
     # }
 }
 New-Alias -Name c -Value Invoke-GitCheckout
+
+# q => git checkout (q meaning quick)
+function Invoke-GitCheckoutNoPull {
+    Write-Host "Running: 
+    & git checkout $args;"
+
+    & git checkout $args;
+
+    Write-Host Ran $MyInvocation.MyCommand from `$profile
+}
+New-Alias -Name q -Value Invoke-GitCheckoutNoPull
 
 # a => git checkout; git stash apply
 function Invoke-GitCheckoutStashApply {
