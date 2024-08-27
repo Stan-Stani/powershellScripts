@@ -84,6 +84,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git update-index --skip-worktree <file_name>'
             Description = "Use this to avoid commiting changes to a tracked file. (Don't use assume-unchanged instead.)"
+        },
+        [PSCustomObject]@{
+            Command     = 'git-tui diff --no-index "[path1]" "[path2]"'
+            Description = "Nice terminal diff of any two files not in index. Need to insall ``git-tui``."
         }
     )
 
