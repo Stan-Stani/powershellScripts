@@ -1,0 +1,3 @@
+# Ignore contents except for this file. Used to commit functionally empty folder to repo.
+*
+!.gitignore
