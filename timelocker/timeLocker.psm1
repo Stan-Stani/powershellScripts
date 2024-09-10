@@ -51,8 +51,22 @@
 
 
     while ($stopWatch.Elapsed -le $minTimeSpan) {
-        $elapsedTime = $stopWatch.Elapsed
+  
+        if ([System.Console]::KeyAvailable) {
+            # true means don't display
+            $keyPressedInfo = [System.Console]::ReadKey($true) 
+            $keyPressed = $keyPressedInfo.Key 
+            Write-Host "`nYou pressed $keyPressed."
+            if ($keyPressed -eq "P") {
+                $stopwatch.Stop()
+                Write-Host "Paused. Press any key to resume timer..."
+                [System.Console]::ReadKey($true)
+                $stopWatch.Start()
+            }
+        }
+          
         Start-Sleep 0.99
+        $elapsedTime = $stopWatch.Elapsed
 
         Write-Host "`r" $($elapsedTime.Minutes):$($elapsedTime.Seconds) -NoNewLine + "out of $MinMinutes minutes MINIMUM and $MaxMinutes MAXIMUM."
 
