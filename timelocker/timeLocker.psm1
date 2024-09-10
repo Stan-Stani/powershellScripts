@@ -60,7 +60,8 @@
             if ($keyPressed -eq "P") {
                 $stopwatch.Stop()
                 Write-Host "Paused. Press any key to resume timer..."
-                [System.Console]::ReadKey($true)
+                # Discard output so it's not output in console.
+                $null = [System.Console]::ReadKey($true)
                 $stopWatch.Start()
             }
         }
