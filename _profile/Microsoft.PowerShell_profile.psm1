@@ -92,6 +92,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git-tui diff --no-index "[path1]" "[path2]"'
             Description = "Nice terminal diff of any two files not in index. Need to insall ``git-tui``."
+        },
+        [PSCustomObject]@{
+            Command     = 'g add --update * OR g add -u *'
+            Description = "Stage only modified files. Don't stage untracked files."
         }
     )
 
