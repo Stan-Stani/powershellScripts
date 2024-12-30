@@ -53,6 +53,10 @@ function Get-IsElevated {
 
 
 function New-NucleusLocalPortForward {
+    param (
+        [Parameter(Position = 0)]
+        [boolean] $YesPause = $true
+    )
 
     
     if (Get-IsElevated) {   
@@ -77,8 +81,7 @@ function New-NucleusLocalPortForward {
         Write-Host "Finished. Listing current settings..."
 
         netsh interface portproxy show all
-        Pause
-        Exit
+        if ($YesPause) { Pause; Exit }
 
     }
     else {
