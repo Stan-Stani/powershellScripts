@@ -254,4 +254,4 @@ Import-Module "$PSScriptRoot\..\processTerminator\stopNodeJs.psm1"
 
 
 
-Export-ModuleMember -Function * -Alias * -Variable PROFILE_MODULE
+Export-ModuleMember -Function * -Alias * -Variable PROFILE_MODULE   
