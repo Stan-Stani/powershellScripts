@@ -250,6 +250,7 @@ function Start-Webkit {
 
 Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
 Import-Module "$PSScriptRoot\..\adit\adit.psm1"
+Import-Module "$PSScriptRoot\..\processTerminator\stopNodeJs.psm1"
 
 
 
