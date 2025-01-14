@@ -1,5 +1,10 @@
+# Config A: just localhost 
 $listenAddress = "127.0.0.1"
 $connectAddress = $listenAddress
+
+# Config B: forward incoming connections to chosen localhost ports 
+# $listenAddress = "0.0.0.0"
+# $connectAddress = "127.0.0.1"
 
 
 
@@ -78,8 +83,23 @@ function New-NucleusLocalPortForward {
         # Nucleus CoreAPI External
         New-LocalhostPortForward $Env:ExternalFrom $Env:ExternalTo
 
-        Write-Host "Finished. Listing current settings..."
+        Write-Host "Opening ports to local network..."
+        New-NetFirewallRule -DisplayName "Ports 8083-8083 TCP Inbound" -Direction Inbound -LocalPort 8080-8083 -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "Ports 8080-8083 TCP Outbound" -Direction Outbound -LocalPort 8080-8083 -Protocol TCP -Action Allow
 
+        # UDP Firewall Rules
+        New-NetFirewallRule -DisplayName "Ports 8080-8083 UDP Inbound" -Direction Inbound -LocalPort 8080-8083 -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "Ports 8080-8083 UDP Outbound" -Direction Outbound -LocalPort 8080-8083 -Protocol UDP -Action Allow
+
+
+        Write-Host "Finished. Listing relevant firewall current settings..."
+
+        Get-NetFirewallRule | Where-Object DisplayName -like '*Ports 8083-*' | Format-Table -Property DisplayName,Enabled,Direction,Action
+
+        # if you need to remove the firewall openings:  Get-NetFirewallRule | Where-Object DisplayName -like 'Ports 8083-*' | Remove-NetFirewallRule
+
+
+ Write-Host "Listing portproxy current settings..."
         netsh interface portproxy show all
         if ($YesPause) { Pause; Exit }
 
@@ -94,4 +114,5 @@ function New-NucleusLocalPortForward {
 
 
 }
+
 
