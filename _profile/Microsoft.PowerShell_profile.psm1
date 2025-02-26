@@ -227,10 +227,16 @@ function Invoke-RandomUI {
     cls
 }
 function Get-PullRequest {
+    param(     
+     [string]$PRBranch,
+     [string]$BaseBranch="main"
+
+ )
+ 
     # https://matklad.github.io/2023/10/23/unified-vs-split-diff.html
-    git fetch origin $args[0]
+    git fetch origin $PRBranch
     git checkout FETCH_HEAD
-    $base = git merge-base HEAD main
+    $base = git merge-base HEAD $BaseBranch
     git reset $base
 }
 New-Alias -Name gpr -Value Get-PullRequest

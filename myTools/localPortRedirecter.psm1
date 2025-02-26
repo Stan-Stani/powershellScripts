@@ -7,6 +7,8 @@ $connectAddress = $listenAddress
 # $connectAddress = "127.0.0.1"
 
 
+# netsh interface portproxy add v4tov4 listenport=3003 listenaddress=127.0.0.1 connectport=3003 connectaddress=192.168.11.49
+
 
 function New-LocalhostPortForward {
     param (
