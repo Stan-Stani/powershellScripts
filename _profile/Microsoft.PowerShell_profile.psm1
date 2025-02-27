@@ -94,12 +94,16 @@ function Get-UsefulGitCommands {
             Description = "Nice terminal diff of any two files not in index. Need to insall ``git-tui``."
         },
         [PSCustomObject]@{
-            Command     = 'g add --update * OR g add -u *'
+            Command     = 'git add --update * OR g add -u *'
             Description = "Stage only modified files. Don't stage untracked files."
+        }
+        [PSCustomObject]@{
+            Command     = 'git log -S "code" --author="name" --patch'
+            Description = "Search for code committed by a specific user."
         }
     )
 
-    return $gitCommands
+    return $gitCommands | less
 }
 New-Alias -Name ggc -Value Get-UsefulGitCommands
 
