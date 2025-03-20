@@ -1,7 +1,7 @@
 function Stop-NodeJS {
     param (
         [Parameter()]
-        [switch]$NoCheck,
+        [switch]$Force,
         [Parameter()]
         [string]$ExcludePath
     )
@@ -17,7 +17,7 @@ function Stop-NodeJS {
     }
 
     if ($nodeProcesses) {
-        if ($NoCheck) {
+        if ($Force) {
             try {
                 $nodeProcesses | ForEach-Object {
                     Stop-Process -Id $_.Id -Force
