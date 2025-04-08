@@ -1,16 +1,29 @@
-
 function Get-Env {
     param (
         [Parameter(Position = 0)]
         $EnvFileContainingDir
     )
 
-    # https://stackoverflow.com/a/74839464/1465015
-    Get-Content ("$EnvFileContainingDir/.env" || .env) | ForEach-Object {
-        $name, $value = $_.split('=')
-        if ([string]::IsNullOrWhiteSpace($name) || $name.Contains('#')) {
-            continue
+    $envPath = if ($EnvFileContainingDir) { Join-Path $EnvFileContainingDir ".env" } else { ".env" }
+    
+    if (Test-Path $envPath) {
+        Get-Content $envPath | ForEach-Object {
+            $line = $_.Trim()
+            
+            # Skip empty lines and comment lines
+            if ([string]::IsNullOrWhiteSpace($line) || $line.StartsWith('#')) {
+                # Write-Host "Skipping: $line"
+            } 
+            else {
+                $name, $value = $line.Split('=', 2)
+                $name = $name.Trim()
+                if (![string]::IsNullOrWhiteSpace($name)) {
+                    # Write-Host "Adding $name to env"
+                    [Environment]::SetEnvironmentVariable($name, $value, "Process")
+                }
+            }
         }
-        Set-Content env:\$name $value
+    } else {
+        Write-Host "Environment file not found: $envPath"
     }
 }
