@@ -96,32 +96,34 @@ function New-NucleusPortForward {
         # Nucleus CoreAPI External
         New-PortForward $Env:ListenAddress $Env:ExternalFrom $Env:ConnectAddress $Env:ExternalTo
 
-        Write-Host "Opening ports to local network..."
+        Write-Host "Clearing matching firewalls rules, if they already exist..."
+        Get-NetFirewallRule | Where-Object DisplayName -like "$FirewallRuleSetIdentifier*" | Remove-NetFirewallRule
+
+        Write-Host "Opening ports to local network, via firewall..."
 
         # TCP Firewall Rules
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom TCP Inbound" -Direction Inbound -LocalPort $Env:AuthTo -Protocol TCP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom TCP Inbound" -Direction Inbound -LocalPort $Env:InternalTo -Protocol TCP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom TCP Inbound" -Direction Inbound -LocalPort $Env:ExternalTo -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom TCP Inbound" -Direction Inbound -LocalPort $Env:AuthFrom -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom TCP Inbound" -Direction Inbound -LocalPort $Env:InternalFrom -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom TCP Inbound" -Direction Inbound -LocalPort $Env:ExternalFrom -Protocol TCP -Action Allow
 
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom TCP Outbound" -Direction Outbound -LocalPort $Env:AuthTo -Protocol TCP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom TCP Outbound" -Direction Outbound -LocalPort $Env:InternalTo -Protocol TCP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom TCP Outbound" -Direction Outbound -LocalPort $Env:ExternalTo -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom TCP Outbound" -Direction Outbound -LocalPort $Env:AuthFrom -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom TCP Outbound" -Direction Outbound -LocalPort $Env:InternalFrom -Protocol TCP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom TCP Outbound" -Direction Outbound -LocalPort $Env:ExternalFrom -Protocol TCP -Action Allow
 
         # UDP Firewall Rules
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom UDP Inbound" -Direction Inbound -LocalPort $Env:AuthTo -Protocol UDP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom UDP Inbound" -Direction Inbound -LocalPort $Env:InternalTo -Protocol UDP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom UDP Inbound" -Direction Inbound -LocalPort $Env:ExternalTo -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom UDP Inbound" -Direction Inbound -LocalPort $Env:AuthFrom -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom UDP Inbound" -Direction Inbound -LocalPort $Env:InternalFrom -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom UDP Inbound" -Direction Inbound -LocalPort $Env:ExternalFrom -Protocol UDP -Action Allow
 
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom UDP Outbound" -Direction Outbound -LocalPort $Env:AuthTo -Protocol UDP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom UDP Outbound" -Direction Outbound -LocalPort $Env:InternalTo -Protocol UDP -Action Allow
-        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom UDP Outbound" -Direction Outbound -LocalPort $Env:ExternalTo -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:AuthFrom UDP Outbound" -Direction Outbound -LocalPort $Env:AuthFrom -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:InternalFrom UDP Outbound" -Direction Outbound -LocalPort $Env:InternalFrom -Protocol UDP -Action Allow
+        New-NetFirewallRule -DisplayName "$FirewallRuleSetIdentifier $Env:ExternalFrom UDP Outbound" -Direction Outbound -LocalPort $Env:ExternalFrom -Protocol UDP -Action Allow
 
 
         Write-Host "Finished. Listing relevant firewall current settings..."
 
         Get-NetFirewallRule | Where-Object DisplayName -like "*$FirewallRuleSetIdentifier*" | Format-Table -Property DisplayName,Enabled,Direction,Action
 
-        # if you need to remove the firewall openings:  Get-NetFirewallRule | Where-Object DisplayName -like 'Ports 8083-*' | Remove-NetFirewallRule
 
 
  Write-Host "Listing portproxy current settings..."
@@ -134,9 +136,6 @@ function New-NucleusPortForward {
         $commandToRun = "Import-Module $PSCommandPath; New-NucleusPortForward"
         Start-Process pwsh -Verb RunAs -ArgumentList "-NoExit", "-Command", "$commandToRun"
     }
-
-
-
 
 }
 
