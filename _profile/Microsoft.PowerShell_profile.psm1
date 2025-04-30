@@ -238,11 +238,14 @@ function Get-PullRequest {
 
  )
  
+    $Env:HUSKY_SKIP_HOOKS=1
     # https://matklad.github.io/2023/10/23/unified-vs-split-diff.html
     git fetch origin $PRBranch
     git checkout FETCH_HEAD
     $base = git merge-base HEAD $BaseBranch
     git reset $base
+    $Env:HUSKY_SKIP_HOOKS=0
+
 }
 New-Alias -Name gpr -Value Get-PullRequest
 
