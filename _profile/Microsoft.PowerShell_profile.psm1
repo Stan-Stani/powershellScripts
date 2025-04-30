@@ -122,6 +122,7 @@ function Invoke-GitCheckout {
     & git checkout $args;
     & git pull;"
     & git checkout $args;
+    Start-Sleep -m 500
     & git pull;
     Write-Host Ran $MyInvocation.MyCommand from `$profile
     # $currentLocation = Get-Location
