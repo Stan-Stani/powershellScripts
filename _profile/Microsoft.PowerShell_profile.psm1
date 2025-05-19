@@ -96,10 +96,14 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git add --update * OR g add -u *'
             Description = "Stage only modified files. Don't stage untracked files."
-        }
+        },
         [PSCustomObject]@{
             Command     = 'git log -S "code" --author="name" --patch'
             Description = "Search for code committed by a specific user."
+        },
+         [PSCustomObject]@{
+            Command     = 'git log --follow -- filename'
+            Description = "Show commits that affected specific file"
         }
     )
 
