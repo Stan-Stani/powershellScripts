@@ -104,6 +104,10 @@ function Get-UsefulGitCommands {
          [PSCustomObject]@{
             Command     = 'git log --follow -- filename'
             Description = "Show commits that affected specific file"
+        },
+        [PSCustomObject]@{
+            Command     = 'git rev-list --max-count 1 --first-parent --before="2025-02-01 13:37" main'
+            Description = "Get first commit before date"
         }
     )
 
