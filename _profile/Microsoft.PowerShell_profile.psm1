@@ -273,7 +273,7 @@ function Start-Webkit {
 function Start-SteffesWebsiteSecure {
     yarn dev -- -- --experimental-https --experimental-https-key C:/Users/StanStanislaus/web-certificates/localhost-key.pem --experimental-https-cert C:/Users/StanStanislaus/web-certificates/localhost.pem -H 0.0.0.0
 }
-New-Alias -Name h -Value Start-SteffesWebsiteSecure
+New-Alias -Name hs -Value Start-SteffesWebsiteSecure
 
 Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
 Import-Module "$PSScriptRoot\..\adit\adit.psm1"
