@@ -107,6 +107,18 @@ function Get-UsefulGitCommands {
 }
 New-Alias -Name ggc -Value Get-UsefulGitCommands
 
+function Get-UsefulPSCommands { 
+    $gitCommands = @(
+        [PSCustomObject]@{
+            Command     = 'New-Item -Path C:\LinkDir -ItemType SymbolicLink -Value F:\RealDir'
+            Description = 'Create symbolic link'
+        }
+    )
+
+    return $gitCommands | less
+}
+New-Alias -Name gpc -Value Get-UsefulPSCommands
+
 
 # d => git diff
 function Invoke-GitDiff { & git diff $args; Write-Host Ran $MyInvocation.MyCommand from `$profile }
