@@ -96,10 +96,18 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git add --update * OR g add -u *'
             Description = "Stage only modified files. Don't stage untracked files."
-        }
+        },
         [PSCustomObject]@{
             Command     = 'git log -S "code" --author="name" --patch'
             Description = "Search for code committed by a specific user."
+        },
+         [PSCustomObject]@{
+            Command     = 'git log --follow -- filename'
+            Description = "Show commits that affected specific file"
+        },
+        [PSCustomObject]@{
+            Command     = 'git rev-list --max-count 1 --first-parent --before="2025-02-01 13:37" main'
+            Description = "Get first commit before date"
         }
     )
 
@@ -134,6 +142,7 @@ function Invoke-GitCheckout {
     & git checkout $args;
     & git pull;"
     & git checkout $args;
+    Start-Sleep -m 500
     & git pull;
     Write-Host Ran $MyInvocation.MyCommand from `$profile
     # $currentLocation = Get-Location
@@ -249,11 +258,14 @@ function Get-PullRequest {
 
  )
  
+    $Env:HUSKY_SKIP_HOOKS=1
     # https://matklad.github.io/2023/10/23/unified-vs-split-diff.html
     git fetch origin $PRBranch
     git checkout FETCH_HEAD
     $base = git merge-base HEAD $BaseBranch
     git reset $base
+    $Env:HUSKY_SKIP_HOOKS=0
+
 }
 New-Alias -Name gpr -Value Get-PullRequest
 
@@ -269,6 +281,11 @@ function Start-Webkit {
     cd C:\Users\StanStanislaus\Documents\Stan\Utils\webkit-browser
     node nocache.js
 }
+
+function Start-SteffesWebsiteSecure {
+    yarn dev -- -- --experimental-https --experimental-https-key C:/Users/StanStanislaus/web-certificates/localhost-key.pem --experimental-https-cert C:/Users/StanStanislaus/web-certificates/localhost.pem -H 0.0.0.0
+}
+New-Alias -Name hs -Value Start-SteffesWebsiteSecure
 
 Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
 Import-Module "$PSScriptRoot\..\adit\adit.psm1"
