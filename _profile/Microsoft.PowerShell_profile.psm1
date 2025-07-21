@@ -192,14 +192,17 @@ New-Alias -Name pp -Value Invoke-GitCheckoutPull
 
 
 # m => git stash; git checkout main; git pull
-function Invoke-GitStashPullMain {
+function Invoke-GitStashPull {
+    param(     
+     [string]$CheckoutBranch="main"
+ )
     $ErrorActionPreference = "Stop"
     & git stash
-    & git checkout main
+    & git checkout $CheckoutBranch
     & git pull
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name m -Value Invoke-GitStashPullMain
+New-Alias -Name m -Value Invoke-GitStashPull
 
 function Set-ClickablePowerShellScript {
     # Find the first .ps1 script in the current directory
