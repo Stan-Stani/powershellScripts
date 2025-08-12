@@ -4,9 +4,6 @@ $env:PYTHONIOENCODING = "utf-8"
 # Otput git stuff with correct formatting, e.g. `git diff > mypatch.patch`
 $env:LESSCHARSET = 'UTF-8'
 
-# Setup git error debug logging
-$env:GIT_TRACE2_EVENT = "C:\Users\StanStanislaus\Documents\Stan\git_trace2_event.log"
-
 # hx uses esc differently and I keep accidentally clearing lines in vanilla pwsh
 # ctrl + c will clear line effectively enough if I need it
 Set-PSReadLineKeyHandler -Key Escape -ScriptBlock {}
