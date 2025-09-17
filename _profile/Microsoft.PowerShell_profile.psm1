@@ -179,13 +179,12 @@ function Invoke-GitPull {
 }
 New-Alias -Name p -Value Invoke-GitPull
 
-# pp => git checkout $args; git pull
-function Invoke-GitCheckoutPull {
-    & git checkout $args
-    & git pull
+# pp => git push --force-with-lease
+function Invoke-GitPush {
+    & git push --force-with-lease
     Write-Host Ran $MyInvocation.MyCommand from `$profile
 }
-New-Alias -Name pp -Value Invoke-GitCheckoutPull
+New-Alias -Name pp -Value Invoke-GitPush
 
 
 # m => git stash; git checkout main; git pull
