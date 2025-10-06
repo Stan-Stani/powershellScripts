@@ -84,7 +84,7 @@ function Get-UsefulGitCommands {
         },
         [PSCustomObject]@{
             Command     = 'git update-index --skip-worktree <file_name>'
-            Description = "Use this to avoid commiting changes to a tracked file. (Don't use assume-unchanged instead.)"
+            Description = "Use this to avoid committing changes to a tracked file. (Don't use assume-unchanged instead.)"
         },
         [PSCustomObject]@{
             Command     = 'git-tui diff --no-index "[path1]" "[path2]"'
@@ -285,6 +285,20 @@ function Start-SteffesWebsiteSecure {
     yarn dev -- -- --experimental-https --experimental-https-key C:/Users/StanStanislaus/web-certificates/localhost-key.pem --experimental-https-cert C:/Users/StanStanislaus/web-certificates/localhost.pem -H 0.0.0.0
 }
 New-Alias -Name hs -Value Start-SteffesWebsiteSecure
+
+function Start-StorybookSecure {
+    $env:VITE_PROXY_NO_VERIFY_CERTS = "true"
+
+    yarn storybook dev `
+    -p 6006 `
+    --host 192.168.11.49 `
+    --https `
+    --ssl-cert "C:\Users\StanStanislaus\web-certificates\localhost.pem" `
+    --ssl-key  "C:\Users\StanStanislaus\web-certificates\localhost-key.pem"
+      
+    Remove-Item Env:VITE_PROXY_NO_VERIFY_CERTS
+}
+New-Alias -Name hsb -Value Start-StorybookSecure
 
 Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
 Import-Module "$PSScriptRoot\..\adit\adit.psm1"
