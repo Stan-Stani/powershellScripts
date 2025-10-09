@@ -36,7 +36,14 @@ try {
         Switch-Desktop $desktopToEndAt
         Invoke-Item $shortcutToEndAt
         Start-Sleep 20
-        $voice.speak("System ready!")
+        
+        $wavPath = Join-Path -Path $PSScriptRoot -ChildPath 'tetoHiSystemReady.wav'
+
+        $player = New-Object System.Media.SoundPlayer
+        $player.SoundLocation = $wavPath
+        $player.Load()          # Preload to catch errors early
+        $player.PlaySync()      # Blocks until the sound is done
+    
     }
 
 
