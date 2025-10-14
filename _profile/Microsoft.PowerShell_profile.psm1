@@ -294,7 +294,8 @@ function Start-StorybookSecure {
     --host 192.168.11.49 `
     --https `
     --ssl-cert "C:\Users\StanStanislaus\web-certificates\localhost.pem" `
-    --ssl-key  "C:\Users\StanStanislaus\web-certificates\localhost-key.pem"
+    --ssl-key  "C:\Users\StanStanislaus\web-certificates\localhost-key.pem" `
+    --no-open  
       
     Remove-Item Env:VITE_PROXY_NO_VERIFY_CERTS
 }
