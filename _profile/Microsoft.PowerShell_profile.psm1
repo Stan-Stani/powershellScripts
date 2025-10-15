@@ -226,6 +226,17 @@ function Set-ClickablePowerShellScript {
     }
 }
 
+function Invoke-MakeSeedAuction {
+    cd C:\Users\StanStanislaus\git-repos\CoreAPI\
+    try {
+        make SHELL=pwsh.exe seed-auction
+        }
+    finally {
+        cd -
+    }
+}
+New-Alias -Name seedAuc -Value Invoke-MakeSeedAuction
+
 function Invoke-LernaNoCache {
     # yarn lerna exec yarn rimraf ./node_modules/.cache 
     # yarn lerna run build --skip-nx-cache
