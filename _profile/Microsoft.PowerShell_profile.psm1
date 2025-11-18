@@ -23,6 +23,9 @@ foreach ($module in Get-Childitem $gitExtensionsModuleFolder -Name -Filter "*.ps
     Import-Module "$gitExtensionsModuleFolder/$module"
 }
 
+# JJ completions
+Invoke-Expression (& { (jj util completion power-shell | Out-String) })
+
 
 $PROFILE_MODULE = $PSScriptRoot
 
