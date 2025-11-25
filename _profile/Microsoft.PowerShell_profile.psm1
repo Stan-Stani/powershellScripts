@@ -315,6 +315,22 @@ function Start-StorybookSecure {
 }
 New-Alias -Name hsb -Value Start-StorybookSecure
 
+function Remove-BinObj {
+    [CmdletBinding(SupportsShouldProcess)]
+    param(
+        [string]$Path = "."
+    )
+    $folders = Get-ChildItem -Path $Path -Include bin,obj -Recurse -Directory -Force | 
+        Where-Object { $_.FullName -notmatch 'node_modules' }
+    
+    if ($folders.Count -eq 0) {
+        Write-Host "No bin or obj folders found to remove." -ForegroundColor Yellow
+        return
+    }
+    
+    $folders | Remove-Item -Recurse -Force -WhatIf:$WhatIfPreference -ErrorAction Continue
+}
+
 Import-Module "$PSScriptRoot\..\timelocker\timeLocker.psm1"
 Import-Module "$PSScriptRoot\..\adit\adit.psm1"
 Import-Module "$PSScriptRoot\..\processTerminator\stopNodeJs.psm1"
