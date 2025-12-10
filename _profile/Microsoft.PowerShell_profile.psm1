@@ -108,6 +108,10 @@ function Get-UsefulGitCommands {
         [PSCustomObject]@{
             Command     = 'git rev-list --max-count 1 --first-parent --before="2025-02-01 13:37" main'
             Description = "Get first commit before date"
+        },
+        [PSCustomObject]@{
+            Command     = 'git log -S "[unique part of code]" --all --reverse -p'
+            Description = "Finds when this part of the code was first added. Sometimes easier than trudging through blame chains."
         }
     )
 
@@ -301,11 +305,15 @@ function Start-SteffesWebsiteSecure {
 New-Alias -Name hs -Value Start-SteffesWebsiteSecure
 
 function Start-StorybookSecure {
+    param(
+        [string]$HostIP = "192.168.11.49"
+    )
+
     $env:VITE_PROXY_NO_VERIFY_CERTS = "true"
 
     yarn storybook dev `
     -p 6006 `
-    --host 192.168.11.49 `
+    --host $HostIP `
     --https `
     --ssl-cert "C:\Users\StanStanislaus\web-certificates\localhost.pem" `
     --ssl-key  "C:\Users\StanStanislaus\web-certificates\localhost-key.pem" `
