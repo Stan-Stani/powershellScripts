@@ -8,6 +8,9 @@ $env:LESSCHARSET = 'UTF-8'
 # ctrl + c will clear line effectively enough if I need it
 Set-PSReadLineKeyHandler -Key Escape -ScriptBlock {}
 
+# https://code.visualstudio.com/docs/terminal/shell-integration
+if ($env:TERM_PROGRAM -eq "vscode") { . "$(code --locate-shell-integration-path pwsh)" }
+
 try {
     # Runs the --alias command for thefuck, setting up thefuck properly for ps
     Invoke-Expression "$(thefuck --alias)" 
