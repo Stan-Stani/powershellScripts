@@ -116,6 +116,10 @@ function Get-UsefulGitCommands {
             Command     = 'git log -S "[unique part of code]" --all --reverse -p'
             Description = "Finds when this part of the code was first added. Sometimes easier than trudging through blame chains."
         }
+        [PSCustomObject]@{
+            Command     = 'git --no-pager log --oneline --graph --left-right --boundary sprints/sprint-40...projects/blogs'
+            Description = "To see commits from both branches back to their common merge base"
+        }
     )
 
     return $gitCommands | less
